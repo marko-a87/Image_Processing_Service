@@ -1,9 +1,5 @@
 # 🚀 Image Processing Service
 
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Node.js](https://img.shields.io/badge/node-%3E=18-brightgreen)](https://nodejs.org/)
-[![Status](https://img.shields.io/badge/status-in%20progress-orange)]()
-
 A **secure, production-ready backend service** for handling image uploads, processing, and user authentication — designed with scalability, security, and structured logging in mind.  
 
 > 🔧 **Work in Progress:** Features and architecture are actively being developed.
