@@ -66,7 +66,7 @@ JWT_REFRESH_SECRET=your_refresh_secret
 PORT=3000
 ```
 
-4. Run the app
+4. **Run the app**
 ```bash
 npm run dev
 ```
