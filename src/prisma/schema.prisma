@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  username String @unique
+  email    String @unique
+  password String
+  role     Role   @default(USER)
+
+  refreshTokenHash String? // for refresh token rotation
+  tokenVersion     Int       @default(0) // invalidate tokens globally
+  failedLoginCount Int       @default(0)
+  lockedUntil      DateTime?
+
+  images        Image[]
+  
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  img_name  String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  height    Int
+  width     Int
+}
+
+
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ImageStatus {
+  UPLOADED
+  PROCESSING
+  READY
+  FAILED
+}

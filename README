@@ -1,0 +1,68 @@
+# 🚀 Image Processing Service
+
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Node.js](https://img.shields.io/badge/node-%3E=18-brightgreen)](https://nodejs.org/)
+[![Status](https://img.shields.io/badge/status-in%20progress-orange)]()
+
+A **secure, production-ready backend service** for handling image uploads, processing, and user authentication — designed with scalability, security, and structured logging in mind.  
+
+> 🔧 **Work in Progress:** Features and architecture are actively being developed.
+
+---
+
+## 🌟 Features (Implemented)
+
+- ✅ User authentication with **signup, login, logout**  
+- ✅ JWT-based **access & refresh token system** with rotation  
+- ✅ Account lockout after repeated failed login attempts  
+- ✅ **Structured logging** with Winston  
+- ✅ Prisma ORM for database access  
+- ✅ Secure handling of **environment variables**  
+
+---
+
+## 🚀 Features (Planned / In Progress)
+
+- 🖼 Image processing pipelines (resizing, filtering, etc.)  
+- ☁️ Image Storage 
+- ⚡ Real-time progress tracking for uploads  
+- 📝 Admin panel for monitoring users & logs  
+- 🔒 Role-based access control (RBAC)  
+
+---
+
+## 🛠 Tech Stack
+
+| Layer                | Tech                                  |
+|---------------------|---------------------------------------|
+| Backend             | Node.js, Express                      |
+| Database            | PostgreSQL (via Prisma ORM)           |
+| Authentication      | JWT, bcrypt                            |
+| Logging             | Winston, structured JSON logs         |
+| Dev & Tools         | ESLint, Prettier, dotenv, nodemon    |
+
+---
+
+## ⚡ Getting Started
+
+1. **Clone the repo**
+
+```bash
+git clone git@github.com:yourusername/image-processing-service.git
+cd image-processing-service
+
+
+2. **Install dependencies**
+
+npm install
+
+3. **Create a .env file (based on .env.example)**
+
+DATABASE_URL=postgresql://user:pass@localhost:5432/db
+JWT_ACCESS_SECRET=your_access_secret
+JWT_REFRESH_SECRET=your_refresh_secret
+PORT=3000
+
+4. Run the app
+
+npm run dev
