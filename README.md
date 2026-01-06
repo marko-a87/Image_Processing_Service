@@ -50,19 +50,23 @@ A **secure, production-ready backend service** for handling image uploads, proce
 ```bash
 git clone git@github.com:yourusername/image-processing-service.git
 cd image-processing-service
-
+```
 
 2. **Install dependencies**
 
+```bash
 npm install
-
+```
 3. **Create a .env file (based on .env.example)**
 
+```
 DATABASE_URL=postgresql://user:pass@localhost:5432/db
 JWT_ACCESS_SECRET=your_access_secret
 JWT_REFRESH_SECRET=your_refresh_secret
 PORT=3000
+```
 
 4. Run the app
-
+```bash
 npm run dev
+```
