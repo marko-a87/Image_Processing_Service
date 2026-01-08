@@ -1,4 +1,3 @@
-
 class AppError extends Error {
   constructor(message, statusCode, errorCode = null) {
     super(message);
@@ -16,16 +15,16 @@ class ValidationError extends AppError {
     this.field = field;
   }
 }
-class DatabaseError extends AppError {
-  constructor(message) {
-    super(message, 500, "DATABASE_ERROR");
-  }
-}
+// class DatabaseError extends AppError {
+//   constructor(message) {
+//     super(message, 500, "DATABASE_ERROR");
+//   }
+// }
 
-class AuthError extends AppError {
-  constructor(message, statusCode = 401, errorCode = "AUTH_ERROR") {
-    super(message, statusCode, errorCode);
-  }
-}
+// class AuthError extends AppError {
+//   constructor(message, statusCode = 401,errorCode = "AUTH_ERROR") {
+//     super(message, statusCode, errorCode);
+//   }
+// }
 
-export { AppError, ValidationError, DatabaseError, AuthError };
+export { AppError, ValidationError };

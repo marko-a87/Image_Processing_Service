@@ -8,7 +8,7 @@ import {
 import {
   validateLoginInput,
   validateSignupInput,
-} from "../middleware/validateSchema.js";
+} from "../middleware/validateSchema.middleware.js";
 
 const router = express.Router();
 

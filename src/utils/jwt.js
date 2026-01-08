@@ -29,19 +29,19 @@ const generateRefreshToken = (userId, role, version, res) => {
 };
 
 const deleteRefreshToken = (res) => {
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-  });
+  res.clearCookie("refreshToken");
 };
 
 const deleteAccessToken = (res) => {
-  res.clearCookie("accessToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-  });
+  res.clearCookie("accessToken");
+};
+
+const verifyAccessToken = (token) => {
+  return jwt.verify(token, process.env.JWT_ACCESS_TOKEN);
+};
+
+const verifyRefreshToken = (token) => {
+  return jwt.verify(token, process.env.JWT_REFRESH_TOKEN);
 };
 
 export {
@@ -49,4 +49,6 @@ export {
   generateRefreshToken,
   deleteRefreshToken,
   deleteAccessToken,
+  verifyAccessToken,
+  verifyRefreshToken,
 };

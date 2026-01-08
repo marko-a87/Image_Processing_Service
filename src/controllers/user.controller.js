@@ -1,4 +1,4 @@
-import { prisma } from "../utils/prismaClient.js";
+import { prisma } from "../config/prismaClient.config.js";
 const getUsersController = async (req, res, next) => {
   try {
     const users = await prisma.user.findMany();

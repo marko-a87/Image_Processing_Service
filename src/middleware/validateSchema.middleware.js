@@ -1,5 +1,4 @@
-import joi from "joi";
-import { signupSchema, loginSchema } from "../validation/auth.schema.js";
+import { signupSchema, loginSchema } from "../validation/schema/auth.schema.js";
 import { AppError } from "../utils/appError.js";
 const validateSignupInput = (req, res, next) => {
   const { error } = signupSchema.validate(req.body);
