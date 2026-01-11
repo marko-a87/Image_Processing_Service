@@ -1,4 +1,5 @@
 import { prisma } from "../config/prismaClient.config.js";
+import path from "path";
 import sharp from "sharp";
 import fs from "fs/promises";
 import { AppError } from "../utils/appError.js";
@@ -19,7 +20,13 @@ const processUploadedImages = async (files, userId, requestId) => {
   try {
     // We use a for...of loop instead of forEach to handle async correctly
     for (const file of files) {
-      if (!file || !file.path || !file.originalname || !file.mimetype || !file.size) {
+      if (
+        !file ||
+        !file.path ||
+        !file.originalname ||
+        !file.mimetype ||
+        !file.size
+      ) {
         throw new AppError("Invalid file object provided for processing", 400);
       }
 
@@ -95,8 +102,22 @@ const processUploadedImages = async (files, userId, requestId) => {
   }
 };
 
-const imageRetrieve = async () => {
-  // TODO: Image retrieval function
+/**
+ * Service to find an image path by publicId
+ */
+const imageRetrieve = async (publicId) => {
+  // 1. Data Access (Repository role)
+  const image = await prisma.image.findUnique({
+    where: { publicId },
+  });
+
+  // 2. Business Logic (Service role)
+  if (!image) {
+    throw new AppError("No image found with that ID", 404);
+  }
+
+  // Convert stored path to absolute path for the controller
+  return path.resolve(image.path);
 };
 
 const imageDelete = () => {

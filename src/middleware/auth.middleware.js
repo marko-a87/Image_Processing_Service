@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { prisma } from "../config/prismaClient.config.js";
 import { AppError } from "../utils/appError.js";
+import { verifyAccessToken } from "../utils/jwt.js";
 
 // 1. Identity Verification
 export const authenticate = async (req, res, next) => {
@@ -11,7 +12,7 @@ export const authenticate = async (req, res, next) => {
       throw new AppError("Authentication required", 401);
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_TOKEN);
+    const decoded = verifyAccessToken(token);
 
     // Fetch user from DB to ensure they still exist and check tokenVersion
     const user = await prisma.user.findUnique({

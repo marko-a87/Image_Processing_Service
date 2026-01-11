@@ -40,9 +40,16 @@ const imageUploadController = async (req, res, next) => {
 
 const imageRetrieveController = async (req, res, next) => {
   try {
-    // Call the image retrieval service
-    const image = await ImageService.imageRetrieve();
-    res.status(200).json({ message: "Image retrieved successfully", image });
+    const { publicId } = req.params;
+
+    const absolutePath = await ImageService.imageRetrieve(publicId);
+
+    // This streams the file to the browser
+    res.sendFile(absolutePath, (err) => {
+      if (err) {
+        next(new AppError("Failed to deliver image file", 500));
+      }
+    });
   } catch (error) {
     next(error);
   }

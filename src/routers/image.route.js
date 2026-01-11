@@ -14,6 +14,6 @@ router.post(
   uploadImageMiddleware.array("files", 10),
   imageUploadController
 );
-router.get("/:id", imageRetrieveController);
+router.get("/:publicId", imageRetrieveController);
 
 export default router;

@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { AppError, ValidationError } from "../utils/appError.js";
 import logger from "../utils/logger.js";
+import { verifyRefreshToken } from "../utils/jwt.js";
 
 /**
  * Signup a new user
@@ -101,7 +102,7 @@ const refreshTokens = async (refreshToken) => {
 
   let decoded;
   try {
-    decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN);
+    decoded = verifyRefreshToken(refreshToken);
   } catch (err) {
     throw new AppError("Invalid refresh token or expired refresh token", 401);
   }
@@ -130,7 +131,7 @@ const refreshTokens = async (refreshToken) => {
 const logout = async (refreshToken) => {
   if (!refreshToken) return;
 
-  const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN);
+  const decoded = verifyRefreshToken(refreshToken);
 
   await prisma.user.update({
     where: { id: decoded.id },
