@@ -22,8 +22,32 @@ const logLevels = {
 //     stack ? "\n" + stack : ""
 //   } ${logMetadata ? JSON.stringify(logMetadata) : ""}`;
 // };
+// const consoleFormat = (info) => {
+//   // 1. Extract properties and provide a default empty object for logMetadata
+//   const {
+//     timestamp,
+//     level,
+//     message,
+//     requestId,
+//     logMetadata = {},
+//     stack,
+//   } = info;
+
+//   // 2. Format the Request ID tag (only if it exists)
+//   const idTag = requestId ? ` [${requestId.split("-")[0]}]` : "";
+
+//   // 3. Stringify metadata only if there is actually data inside it
+//   const metaString = Object.keys(logMetadata).length
+//     ? ` ${JSON.stringify(logMetadata)}`
+//     : "";
+
+//   // 4. Return the combined string
+//   return `${timestamp}${idTag} [${level.toUpperCase()}]: ${message}${
+//     stack ? "\n" + stack : ""
+//   }${metaString}`;
+// };
+
 const consoleFormat = (info) => {
-  // 1. Extract properties and provide a default empty object for logMetadata
   const {
     timestamp,
     level,
@@ -33,15 +57,14 @@ const consoleFormat = (info) => {
     stack,
   } = info;
 
-  // 2. Format the Request ID tag (only if it exists)
+  // If requestId exists (from manual logger.info calls), format it.
+  // If it doesn't exist, we don't add a tag because Morgan already puts the ID in the message.
   const idTag = requestId ? ` [${requestId.split("-")[0]}]` : "";
 
-  // 3. Stringify metadata only if there is actually data inside it
   const metaString = Object.keys(logMetadata).length
     ? ` ${JSON.stringify(logMetadata)}`
     : "";
 
-  // 4. Return the combined string
   return `${timestamp}${idTag} [${level.toUpperCase()}]: ${message}${
     stack ? "\n" + stack : ""
   }${metaString}`;
@@ -55,7 +78,7 @@ const fileFormat = winston.format.combine(
 
 const logger = winston.createLogger({
   levels: logLevels,
-  level: config.logLevel,
+  level: "debug",
 
   format: winston.format.combine(
     winston.format.errors({ stack: true }),

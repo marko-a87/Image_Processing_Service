@@ -120,8 +120,47 @@ const imageRetrieve = async (publicId) => {
   return path.resolve(image.path);
 };
 
-const imageDelete = () => {
-  // TODO: Image deletion function
+const imageDelete = async (publicId, userId, requestId) => {
+  // 1. Find the image first to get the file path and verify ownership
+  const image = await prisma.image.findUnique({
+    where: { publicId },
+  });
+
+  if (!image) {
+    throw new AppError("Image not found", 404);
+  }
+
+  // 2. Security Check: Only the owner can delete their images
+  if (image.userId !== userId) {
+    throw new AppError("You do not have permission to delete this image", 403);
+  }
+
+  // 3. Delete from Database
+  // We do this first so if DB fails, we haven't lost the file yet
+  await prisma.image.delete({
+    where: { publicId },
+  });
+
+  // 4. Delete from File System
+  try {
+    const absolutePath = path.resolve(image.path);
+    await fs.unlink(absolutePath);
+
+    logger.info(`Physically deleted file: ${image.img_name}`, { requestId });
+  } catch (err) {
+    // If DB delete worked but file delete failed, we log a critical warning
+    // This is where a 'Senior' developer tracks storage leaks
+    logger.error(
+      `Database record deleted but file removal failed: ${image.path}`,
+      {
+        requestId,
+        error: err.message,
+      }
+    );
+    // We don't throw here because the DB record is already gone
+  }
+
+  return true;
 };
 const imageTransform = () => {
   // TODO: Image transformation functions (resize, crop, etc.)

@@ -2,6 +2,7 @@ import express from "express";
 import {
   imageRetrieveController,
   imageUploadController,
+  imageDeleteController,
 } from "../controllers/image.controller.js";
 
 import { uploadImageMiddleware } from "../middleware/uploadImage.middleware.js";
@@ -14,6 +15,7 @@ router.post(
   uploadImageMiddleware.array("files", 10),
   imageUploadController
 );
-router.get("/:publicId", imageRetrieveController);
+router.get("/:publicId", authenticate, imageRetrieveController);
+router.delete("/:publicId", authenticate, imageDeleteController);
 
 export default router;

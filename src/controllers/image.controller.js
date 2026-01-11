@@ -57,9 +57,17 @@ const imageRetrieveController = async (req, res, next) => {
 
 const imageDeleteController = async (req, res, next) => {
   try {
-    // Call the image deletion service
-    await ImageService.imageDelete();
-    res.status(200).json({ message: "Image deleted successfully" });
+    const { publicId } = req.params;
+    const userId = req.user.id; // From your auth middleware
+    const requestId = req.id; // From your requestId middleware
+
+    // You MUST pass the variables into the service function
+    await ImageService.imageDelete(publicId, userId, requestId);
+
+    res.status(200).json({
+      status: "success",
+      message: "Image deleted successfully",
+    });
   } catch (error) {
     next(error);
   }
