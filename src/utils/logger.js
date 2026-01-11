@@ -78,7 +78,7 @@ const fileFormat = winston.format.combine(
 
 const logger = winston.createLogger({
   levels: logLevels,
-  level: "debug",
+  level: config.logLevel,
 
   format: winston.format.combine(
     winston.format.errors({ stack: true }),
