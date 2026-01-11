@@ -24,12 +24,12 @@ const signupController = async (req, res, next) => {
 const loginController = async (req, res, next) => {
   const { email, password } = req.body;
   try {
-    logger.info("Login attempt");
+    logger.info("Login attempt", { requestId: req.id });
     const user = await authService.login(email, password);
 
     generateAccessToken(user.id, user.role, res);
     generateRefreshToken(user.id, user.role, user.tokenVersion, res);
-    logger.info(`User logged in with ID: ${user.id}`);
+    logger.info(`User logged in with ID: ${user.id}`, { requestId: req.id });
 
     return res.status(200).json({
       message: "Login successful",
@@ -48,16 +48,18 @@ const loginController = async (req, res, next) => {
 const refreshTokenController = async (req, res, next) => {
   const token = req.cookies?.refreshToken;
   try {
-    logger.info("Refresh token attempt...");
+    logger.info("Refresh token attempt...", { requestId: req.id });
     const decoded = await authService.refreshTokens(token);
-    logger.info(`User identified for token refresh: ID ${decoded.id}`);
-    logger.info("Generating new tokens");
+    logger.info(`User identified for token refresh: ID ${decoded.id}`, {
+      requestId: req.id,
+    });
+    logger.info("Generating new tokens", { requestId: req.id });
     // Rotate tokens
 
     generateAccessToken(decoded.id, decoded.role, res);
     generateRefreshToken(decoded.id, decoded.role, decoded.tokenVersion, res);
 
-    logger.info("Token refresh successful");
+    logger.info("Token refresh successful", { requestId: req.id });
 
     return res.status(200).json({ message: "Token refreshed successfully" });
   } catch (err) {
@@ -68,11 +70,11 @@ const refreshTokenController = async (req, res, next) => {
 const logoutController = async (req, res, next) => {
   try {
     const refreshToken = req.cookies?.refreshToken;
-    logger.info("Logout attempt");
+    logger.info("Logout attempt", { requestId: req.id });
     await authService.logout(refreshToken);
     deleteAccessToken(res);
     deleteRefreshToken(res);
-    logger.info("Logout successful");
+    logger.info("Logout successful", { requestId: req.id });
     return res.status(200).json({ message: "Logout successful" });
   } catch (err) {
     next(err);

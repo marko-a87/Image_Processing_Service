@@ -10,4 +10,5 @@
  */
 export type * from './models/User.ts'
 export type * from './models/Image.ts'
+export type * from './models/Token.ts'
 export type * from './commonInputTypes.ts'

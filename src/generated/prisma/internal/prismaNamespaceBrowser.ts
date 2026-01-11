@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Image: 'Image'
+  Image: 'Image',
+  Token: 'Token'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -89,14 +90,30 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const ImageScalarFieldEnum = {
   id: 'id',
+  publicId: 'publicId',
   createdAt: 'createdAt',
   img_name: 'img_name',
-  userId: 'userId',
+  originalName: 'originalName',
+  mimetype: 'mimetype',
+  size: 'size',
+  width: 'width',
   height: 'height',
-  width: 'width'
+  path: 'path',
+  userId: 'userId'
 } as const
 
 export type ImageScalarFieldEnum = (typeof ImageScalarFieldEnum)[keyof typeof ImageScalarFieldEnum]
+
+
+export const TokenScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  token: 'token',
+  userId: 'userId',
+  expiresAt: 'expiresAt'
+} as const
+
+export type TokenScalarFieldEnum = (typeof TokenScalarFieldEnum)[keyof typeof TokenScalarFieldEnum]
 
 
 export const SortOrder = {

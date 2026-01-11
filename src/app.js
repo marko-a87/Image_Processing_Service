@@ -5,11 +5,16 @@ import imageRoute from "./routers/image.route.js";
 import { errorHandler } from "./middleware/errorHandler.middleware.js";
 import { rateLimiter } from "./middleware/rateLimiter.middleware.js";
 import morganMiddleware from "./middleware/morgan.middleware.js";
+import { requestId } from "./middleware/requestId.middleware.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 // Apply rate limiter to all requests
 //Rate Limiter
+app.use(requestId);
+app.use(cookieParser());
+
 app.use(rateLimiter);
 app.use(morganMiddleware);
 

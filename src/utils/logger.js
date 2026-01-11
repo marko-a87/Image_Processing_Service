@@ -10,10 +10,41 @@ const logLevels = {
   debug: 4,
 };
 
-const consoleFormat = ({ timestamp, level, message, logMetadata, stack }) => {
-  return `${timestamp} [${level.toUpperCase()}]: ${message} ${
+/**
+ * Formats a log message for console output.
+ * @param {object} logObject - Log object containing timestamp, level, message, logMetadata, and stack.
+ * @returns {string} - Formatted log message string.
+ */
+// const consoleFormat = (info) => {
+//   const { timestamp, level, message, requestId, logMetadata, stack } = info;
+
+//   return `${timestamp} [${level.toUpperCase()}]: ${message} ${
+//     stack ? "\n" + stack : ""
+//   } ${logMetadata ? JSON.stringify(logMetadata) : ""}`;
+// };
+const consoleFormat = (info) => {
+  // 1. Extract properties and provide a default empty object for logMetadata
+  const {
+    timestamp,
+    level,
+    message,
+    requestId,
+    logMetadata = {},
+    stack,
+  } = info;
+
+  // 2. Format the Request ID tag (only if it exists)
+  const idTag = requestId ? ` [${requestId.split("-")[0]}]` : "";
+
+  // 3. Stringify metadata only if there is actually data inside it
+  const metaString = Object.keys(logMetadata).length
+    ? ` ${JSON.stringify(logMetadata)}`
+    : "";
+
+  // 4. Return the combined string
+  return `${timestamp}${idTag} [${level.toUpperCase()}]: ${message}${
     stack ? "\n" + stack : ""
-  } ${logMetadata ? JSON.stringify(logMetadata) : ""}`;
+  }${metaString}`;
 };
 
 const fileFormat = winston.format.combine(
@@ -60,7 +91,7 @@ const fileRotateClientErrorTransport = new DailyRotateFile({
   maxSize: "20m",
   maxFiles: "14d",
   level: "warn",
-  logType:"client",
+  logType: "client",
   format: fileFormat,
 });
 const fileRotateSecurityTransport = new DailyRotateFile({
@@ -70,7 +101,7 @@ const fileRotateSecurityTransport = new DailyRotateFile({
   maxSize: "20m",
   maxFiles: "14d",
   level: "warn",
-  logType:"security",
+  logType: "security",
   format: fileFormat,
 });
 

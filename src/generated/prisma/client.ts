@@ -49,3 +49,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type Image = Prisma.ImageModel
+/**
+ * Model Token
+ * 
+ */
+export type Token = Prisma.TokenModel
